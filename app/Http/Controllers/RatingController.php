@@ -22,18 +22,18 @@ class RatingController extends Controller
     {
         try {
             $request->validate([
-                "rating" => "required|integer",
+                "score" => "required|integer",
                 "universitie_id" => "required|integer",
                 "user_id" => "required|integer"
             ]);
             $rating = new Rating();
-            $rating->rating = $request->rating;
+            $rating->score = $request->score;
             $rating->universitie_id = $request->universitie_id;
             $rating->user_id = $request->user_id;
             $rating->save();
             return response()->json(["message" => "Rating created successfully"], 201);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -42,11 +42,8 @@ class RatingController extends Controller
      */
     public function show(Rating $rating)
     {
-        try {
-            return Rating::findOrFail($rating);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 404);
-        }
+        return Rating::findOrFail($rating);
+
     }
 
     /**
@@ -56,17 +53,17 @@ class RatingController extends Controller
     {
         try {
             $request->validate([
-                "rating" => "required|integer",
+                "score" => "required|integer",
                 "user_id" => "required|integer",
                 "universitie_id" => "required|integer"
             ]);
-            $rating->rating = $request->rating;
+            $rating->score = $request->score;
             $rating->user_id = $request->user_id;
             $rating->universitie_id = $request->universitie_id;
             $rating->save();
             return response()->json(["message" => "Rating updated successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -79,7 +76,7 @@ class RatingController extends Controller
             $rating->delete();
             return response()->json(["message" => "Rating deleted successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 }

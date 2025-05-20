@@ -31,7 +31,7 @@ class FeedbackController extends Controller
             $feedback->save();
             return response()->json(["message" => "Feedback created successfully"], 201);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -40,14 +40,10 @@ class FeedbackController extends Controller
      */
     public function show(string $id)
     {
-        try {
-            return Feedback::findOrFail($id);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 404);
-        }
+        return Feedback::findOrFail($id);
     }
 
-  
+
     public function update(Request $request, Feedback $feedback)
     {
         try {
@@ -60,7 +56,7 @@ class FeedbackController extends Controller
             $feedback->save();
             return response()->json(["message" => "Feedback updated successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -73,7 +69,7 @@ class FeedbackController extends Controller
             $feedback->delete();
             return response()->json(["message" => "Feedback deleted successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 }

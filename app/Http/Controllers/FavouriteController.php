@@ -31,7 +31,7 @@ class FavouriteController extends Controller
             $favourite->save();
             return response()->json(["message" => "Favourite created successfully"], 201);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -40,11 +40,7 @@ class FavouriteController extends Controller
      */
     public function show(Favourite $favourite)
     {
-        try {
-            return Favourite::findOrFail($favourite);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 404);
-        }
+        return Favourite::findOrFail($favourite);
     }
 
     /**
@@ -62,7 +58,7 @@ class FavouriteController extends Controller
             $favourite->save();
             return response()->json(["message" => "Favourite updated successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -75,7 +71,7 @@ class FavouriteController extends Controller
             $favourite->delete();
             return response()->json(["message" => "Favourite deleted successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 }
