@@ -27,26 +27,20 @@ class UniversityController extends Controller
             $university = new University();
             $university->name = $request->name;
             $university->save();
+
             return response()->json(["message" => "University created successfully"], 201);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
-/**
- * Display the specified resource by ID.
- */
-public function show($id)
-{
-    try {
-        $university = University::findOrFail($id); // Find the university by ID or fail
-        return response()->json($university); // Return the university data
-    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-        return response()->json(["message" => "University not found"], 404); // Return 404 if not found
-    } catch (\Throwable $th) {
-        return response()->json(["message" => $th->getMessage()], 500); // Return other errors
+    /**
+     * Display the specified resource by ID.
+     */
+    public function show($id)
+    {
+        return University::findOrFail($id); // Find the university by ID or fail
     }
-}
 
 
     /**
@@ -62,7 +56,7 @@ public function show($id)
             $university->save();
             return response()->json(["message" => "University updated successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -71,21 +65,18 @@ public function show($id)
      */
     public function destroy(University $university)
     {
-        try {
-            $university->delete();
-            return response()->json(["message" => "University deleted successfully"], 200);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
-        }
+        return $university->delete();
     }
+
+
     public function getMajors($id)
-{
-    $university = University::with('majors')->find($id);
+    {
+        $university = University::with('majors')->find($id);
 
-    if (!$university) {
-        return response()->json(['message' => 'University not found'], 404);
+        if (!$university) {
+            return response()->json(['message' => 'University not found'], 404);
+        }
+
+        return response()->json($university->majors);
     }
-
-    return response()->json($university->majors);
-}
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ContactUs;
 use Illuminate\Http\Request;
+use function App\Helpers\error_response;
 
 class ContactUsController extends Controller
 {
@@ -32,10 +33,10 @@ class ContactUsController extends Controller
             $contactUs->description = $request->description;
             $contactUs->user_id = $request->user_id;
             $contactUs->save();
-            
+
             return response()->json(["message" => "Contact us message created successfully"], 201);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -44,11 +45,8 @@ class ContactUsController extends Controller
      */
     public function show(ContactUs $contactUs)
     {
-        try {
-            return ContactUs::findOrFail($contactUs);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 404);
-        }
+        return ContactUs::findOrFail($contactUs);
+
     }
 
     /**
@@ -68,7 +66,7 @@ class ContactUsController extends Controller
             $contactUs->save();
             return response()->json(["message" => "Contact us message updated successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -81,7 +79,7 @@ class ContactUsController extends Controller
             $contactUs->delete();
             return response()->json(["message" => "Contact us message deleted successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 }

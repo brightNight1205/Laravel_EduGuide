@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rating;
 use Illuminate\Http\Request;
+use function App\Helpers\error_response;
 
 class RatingController extends Controller
 {
@@ -33,7 +34,7 @@ class RatingController extends Controller
             $rating->save();
             return response()->json(["message" => "Rating created successfully"], 201);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -42,11 +43,8 @@ class RatingController extends Controller
      */
     public function show(Rating $rating)
     {
-        try {
-            return Rating::findOrFail($rating);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 404);
-        }
+        return Rating::findOrFail($rating);
+
     }
 
     /**
@@ -66,7 +64,7 @@ class RatingController extends Controller
             $rating->save();
             return response()->json(["message" => "Rating updated successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -79,7 +77,7 @@ class RatingController extends Controller
             $rating->delete();
             return response()->json(["message" => "Rating deleted successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 }

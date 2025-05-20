@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use function App\Helpers\error_response;
 
 class UserController extends Controller
 {
@@ -33,7 +34,7 @@ class UserController extends Controller
             $user->save();
             return response()->json(["message" => "User created successfully"], 201);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -42,11 +43,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        try {
-            return User::findOrFail($id);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 404);
-        }
+        return User::findOrFail($id);
     }
 
     /**
@@ -67,7 +64,7 @@ class UserController extends Controller
             $user->save();
             return response()->json(["message" => "User updated successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -80,7 +77,7 @@ class UserController extends Controller
             User::findOrFail($id)->delete();
             return response()->json(["message" => "User deleted successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -127,7 +124,7 @@ class UserController extends Controller
             $user->save();
             return response()->json(["message" => "User registered successfully"], 201);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 }

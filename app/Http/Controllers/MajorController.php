@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Major;
 
 use Illuminate\Http\Request;
+use function App\Helpers\error_response;
 
 class MajorController extends Controller
 {
@@ -14,31 +15,31 @@ class MajorController extends Controller
     public function index()
 
     {
-        
+
         return major::all();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-public function store(Request $request)
-{
-    try {
-        $request->validate([
-            "major_name" => "required|string",
-            "university_id" => "required|integer|exists:universities,id"
-        ]);
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                "major_name" => "required|string",
+                "university_id" => "required|integer|exists:universities,id"
+            ]);
 
-        $major = new Major(); // Capitalized class name
-        $major->major_name = $request->major_name; // Correct field name
-        $major->university_id = $request->university_id;
-        $major->save();
+            $major = new Major(); // Capitalized class name
+            $major->major_name = $request->major_name; // Correct field name
+            $major->university_id = $request->university_id;
+            $major->save();
 
-        return response()->json(["message" => "Major created successfully"], 201);
-    } catch (\Throwable $th) {
-        return response()->json(["message" => $th->getMessage()], 500);
+            return response()->json(["message" => "Major created successfully"], 201);
+        } catch (\Throwable $th) {
+            return error_response($th);
+        }
     }
-}
 
 
     /**
@@ -46,14 +47,7 @@ public function store(Request $request)
      */
     public function show($id)
     {
-        try {
-            $major = major::findOrFail($id); // Capitalized class name
-            return response()->json($major);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json(["message" => "Major not found"], 404);
-        } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
-        }
+        return major::findOrFail($id); // Capitalized class name
     }
 
     /**
@@ -73,7 +67,7 @@ public function store(Request $request)
 
             return response()->json(["message" => "Major updated successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
 
@@ -86,21 +80,17 @@ public function store(Request $request)
             $major->delete();
             return response()->json(["message" => "Major deleted successfully"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
-            }
-        
-public function getMajorsByUniversity($id)
-{
-    try {
-        $majors = Major::where('university_id', $id)->get();
-        return response()->json($majors);
-    } catch (\Throwable $th) {
-        return response()->json(["message" => $th->getMessage()], 500);
     }
-}
 
-        
-        
-        
+    public function getMajorsByUniversity($id)
+    {
+        try {
+            $majors = Major::where('university_id', $id)->get();
+            return response()->json($majors);
+        } catch (\Throwable $th) {
+            return error_response($th);
+        }
+    }
 }
