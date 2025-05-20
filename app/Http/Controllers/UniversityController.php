@@ -65,7 +65,12 @@ class UniversityController extends Controller
      */
     public function destroy(University $university)
     {
-        return $university->delete();
+        try {
+            $university->delete();
+            return response()->json(["message" => "University deleted successfully"], 200);
+        } catch (\Throwable $th) {
+            return error_response($th);
+        }
     }
 
 

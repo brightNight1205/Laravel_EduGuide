@@ -105,7 +105,7 @@ class UserController extends Controller
             $request->user()->tokens()->delete();
             return response()->json(["message" => "Logout successful"], 200);
         } catch (\Throwable $th) {
-            return response()->json(["message" => $th->getMessage()], 500);
+            return error_response($th);
         }
     }
     public function register(Request $request)
