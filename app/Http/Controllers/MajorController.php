@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Major;
 
 use Illuminate\Http\Request;
-use function App\Helpers\error_response;
 
 class MajorController extends Controller
 {

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\ContactUs;
 use Illuminate\Http\Request;
-use function App\Helpers\error_response;
 
 class ContactUsController extends Controller
 {

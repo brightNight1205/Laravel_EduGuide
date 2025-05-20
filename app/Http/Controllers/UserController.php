@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use function App\Helpers\error_response;
 
 class UserController extends Controller
 {
