@@ -22,12 +22,12 @@ class RatingController extends Controller
     {
         try {
             $request->validate([
-                "rating" => "required|integer",
+                "score" => "required|integer",
                 "universitie_id" => "required|integer",
                 "user_id" => "required|integer"
             ]);
             $rating = new Rating();
-            $rating->rating = $request->rating;
+            $rating->score = $request->score;
             $rating->universitie_id = $request->universitie_id;
             $rating->user_id = $request->user_id;
             $rating->save();
@@ -53,11 +53,11 @@ class RatingController extends Controller
     {
         try {
             $request->validate([
-                "rating" => "required|integer",
+                "score" => "required|integer",
                 "user_id" => "required|integer",
                 "universitie_id" => "required|integer"
             ]);
-            $rating->rating = $request->rating;
+            $rating->score = $request->score;
             $rating->user_id = $request->user_id;
             $rating->universitie_id = $request->universitie_id;
             $rating->save();
