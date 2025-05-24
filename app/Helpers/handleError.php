@@ -5,6 +5,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 function error_response(Throwable $exception)
 {
+    // Log the exception for debugging purposes
     $statusCode = 500;
     $message = 'Something went wrong';
     $errors = [];
