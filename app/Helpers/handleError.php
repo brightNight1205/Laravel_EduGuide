@@ -5,6 +5,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 function error_response(Throwable $exception)
 {
+    // handle different types of exceptions and return a JSON response
     $statusCode = 500;
     $message = 'Something went wrong';
     $errors = [];
